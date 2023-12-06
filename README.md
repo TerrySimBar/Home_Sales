@@ -1,4 +1,4 @@
-# Home_Sales
+# Home_Sales (in progress)
 
 A supervised machine learning project that uses SciKit-learn's `LogisticRegression` and Imbalanced-learn's `RandomOverSampler` to build an effective logistic regression model to predict the creditworthiness of borrowers in two classes: healthy loans (Class 0) and high-risk loans (Class 1). 
 <br>  
