@@ -1,40 +1,28 @@
-# Home_Sales (in progress)
-
-A supervised machine learning project that uses SciKit-learn's `LogisticRegression` and Imbalanced-learn's `RandomOverSampler` to build an effective logistic regression model to predict the creditworthiness of borrowers in two classes: healthy loans (Class 0) and high-risk loans (Class 1). 
-<br>  
-<br>
+# Home_Sales 
+A big data project that uses PySpark to determine key metrics about home sales data.
 <br>
 
-<img src="/images/class_report_original.png" alt="Classification report for original data" width="800"/>
-<br>
-<br>
-<br>
-
-<img src="/images/class_report_resample.png" alt="Classification report for resampled data" width="800"/>
-<br>
-<br>
+<img src="pyspark.png" alt="pyspark logo" width="800"/>
 <br>
 
 ## Table of Contents
 ### Overview
 ### Requirements & Dependencies
-### Project Structure
+### Workflow
 ### Discussion of Results
 ### Usage
 ### Contributing
 ### License
 <br>
 
-### Overview  
-The following analysis is based on the classification reports for the original data and the resampled data. The purpose of the analysis is to determine if the resampled data improves the model's performance. The data set contains information about borrowers' loan sizes, interest rates, incomes, debt to income ratios, number of accounts, derogatory marks, total debt, and loan status. The goal is to build a model that effectively predicts the creditworthiness of borrowers. The original data set is imbalanced with 75,036 healthy loans (Class 0) and 2,500 high-risk loans (Class 1). It is therefore useful to resample the data with `RandomOverSampler` and then check if the resampled data improves the model's performance.  
+### Overview 
+The purpose of this project is to use Spark to create temporary views, partition the data, and cache and uncache a temporary table. SparkSQL is used to run queries on the temporary views in order to answer specific questions about home sales. 
 
-The project uses SciKit-learn and RandomOverSampler to achieve the following crucial steps:
-
-- Use `train_test_split` to create training and testing data.   
-- Use `LogisticRegression` to fit the training data and make predictions using the testing data.    
-- Generate the confusion matrix, classification report, and balanced accuracy score for the model.  
-- Use `RandomOverSampler` to resample the data.
-- Analyze the results of the model and compare the results with the original model to determine if the oversampling the data improves the model's performance.
+Here are some key features of the project:
+- Run SparkSQL queries to answer specific questions
+- Create a temporary view of the data
+- Partition the data
+- Cache and uncache a temporary table.
 
 <br>
 
@@ -43,123 +31,48 @@ This project uses the following software and Python libraries:
 
 Python (version 3.10.9)
 
-Pandas (version: 2.0.3)
-
-NumPy (version: 1.24.3)
-
-Sci-Kit Learn (version: 1.3.0)
-
-Imbalanced-learn (version: 0.10.1)
+Spark (version: 3.4.0)
 
 <br>
 
-### Project Structure
+### Workflow
 <br>
 
-#### Original Data
 1. **Set up dependencies and read/preview the data**
 
-     The data is read from the `lending_data.csv` file and previewed.     
+     The data is read from a Amazon S3 bucket with and stored in a Spark DataFrame. The data is also previewed.
 
-2. **Separate the data into labels and features** 
-    Set the `loan_status` column as the target (y) and all other columns as features (X).   
+2. **Create a temporary view of the DataFrame** 
+    `createOrReplaceTempView` is used to create a temporary view of the DataFrame.
 
-3. **Split the data into training and test datasets** 
-    Use `train_test_split` to split the data into training and testing datasets.
+<img src="temp_view.png" alt="Temp View of DataFrame" width="800"/>
 
-4. **Create and instance of the Logistic Regeression Model** 
-    Use `LogisticRegression` to create an instance of the Logistic Regression model.    
+3. **Print out the data types** 
+    Use `printSchema` to print out the data types of the DataFrame. This is important for casting the data types when running queries.
 
-5. **Fit the model to the data and make predictions** 
-    Use `fit` to fit the model to the training data.
-    Use `predict` to make predictions with the testing data. 
+4. **Run queries to answer specific questions** 
+    Use `spark.sql` to run queries on the temporary view to answer specific questions about the data, casting the data types as needed. 
 
-6. **Evaluate the models performance** 
-    Use `balanced_accuracy_score` to generate the balanced accuracy score, `confusion_matrix` to generate the confusion matrix, and `classification_report_imbalanced` to generate the classification report, to get the values needed to evaluate the model's performance. 
+5. **Check the run time of queries**
+    Use `time` and `print` to check and print out the run time of the queries.
 
+6. **Cache the temporary view, run a query, and check the run time**    
+    Use `cache table` to cache the temporary view, run a query, and check the run time of the query.
+
+7. **Partition the data**    
+    Use `partitionBy` to partition the data by the `date_built` column.
+
+8. **Read the partitioned data and create a temporary view**  
+    Read the partitioned data and create a temporary view of the DataFrame.
+
+9. **Repeat the query fron the cached temporary view on the partitioned data and check the run time of the query**  
+
+7. **Uncache the temporary view**
+    Use `uncache table` to uncache the temporary view and check that the temporary view is no longer cached.
 <br>
 
-#### Resampled Data   
+- The `home_sales.ipynb` file contains the code for the project. The results of the queries are also displayed in the notebook.
 
-1. **Resample the data**
-
-    Create an instance of `RandomOverSampler` and resample the data to address the imbalance in the data.   
-
-2. **Repeat the steps above and evaluate the model's performance on the resampled data**    
-
-<br>  
-
-### Discussion of Results
-
-#### Model 1: Original Data  
-
-- **Precision**
-Healthy Loan (Class 0): 1.00
-Precision of 1.00 indicates that when the model predicts a healthy loan, it is correct every time.
-
-    High-Risk Loan (Class 1): 0.87
-    Precision of 0.87 means that when the model predicts a high-risk loan, it is correct about 87% of the time.
-
-
-- **Recall (Sensitivity)**
-Healthy Loan (Class 0): 1.00
-Recall of 1.00 indicates that the model correctly identifies all instances of healthy loans.
-
-    High-Risk Loan (Class 1): 0.89
-    Recall of 0.89 means that the model captures about 89% of the actual high-risk loans, but misses about 11% of the actual high-risk loans.   
-
-- **F1-Score**
-Healthy Loan (Class 0): 1.00
-F1-score of 1.00 is remarkable and a perfect balance between precision and recall for Class 0. 
-
-    High-Risk Loan (Class 1): 0.88
-    F1-score of 0.88 is a good balance between precision and recall for Class 1.
-
-- **Accuracy**
-Overall accuracy is 0.99, indicating that 99% of all predictions (both true positives and true negatives) were correct.
-
-- **Summary**
-The model performs exceptionally well for predicting healthy loans (Class 0) with high precision, recall, and F1-score.
-For high-risk loans (Class 1), the model performs with lower precision compared to Class 0.
-In general, the model is highly accurate and effective, especially in identifying healthy loans. 
-<br>
-
-#### Model 2: Resampled Data  
-
-- **Precision**
-Healthy Loan (Class 0): 1.00
-Precision of 1.00 indicates that when the model predicts a healthy loan, it is correct every time.
-
-    High-Risk Loan (Class 1): 0.87
-    Precision of 0.87 means that when the model predicts a high-risk loan, it is correct about 87% of the time.
-
-
-- **Recall (Sensitivity)**
-Healthy Loan (Class 0): 1.00
-Recall of 1.00 indicates that the model correctly identifies all instances of healthy loans.
-
-    High-Risk Loan (Class 1): 1.00
-    Recall of 1.00 means that the model correctly identifies all instances of high-risk loans.   
-
-- **F1-Score**
-Healthy Loan (Class 0): 1.00
-F1-score of 1.00 is a perfect balance between precision and recall for Class 0. 
-
-    High-Risk Loan (Class 1): 0.93
-    F1-score of 0.93 is a very good balance between precision and recall for Class 1.
-
-- **Accuracy**
-Overall accuracy is 1.00, indicating that 100% of all predictions (both true positives and true negatives) were correct.
-
-- **Summary**
-The model shows exceptional performance in predicting healthy loans (Class 0) with high precision, recall, and F1-score.
-For high-risk loans (Class 1), the model shows improved performance, compared to the model for the original data.    
-In general, the model is more accurate and effective than the model for the original data. 
-
-#### Recommendations
-The model for the resampled data improved in accuracy from 0.99 to 1.00, and the F1-score and recall for high-risk loans improved from 0.88 to 0.93 and 0.89 to 1.00, respectively. However, the precision for healthy and high-risk loans remained the same at 1.00 and 0.87, respectively. While the model for the resampled data shows overall improvement, it did not do better at predicting high-risk loans. A more effective model will be needed to predict high-risk loans with better precision, since an entity that lends money would not want to miss lending opportunities in thinking that a loan is high-risk when it is not. Turning down 13% of the high-risk loans could be a significant loss of revenue. 
-
-Nevertheless, a more conservative lending company may accept the model's performance, since it is highly accurate and precise in predicting healthy loans.     
 
 <br>
 
@@ -173,7 +86,7 @@ to execute the code and visualize the results appropriately.
 #### Contributions
 Contributions to this project are highly encouraged! If you wish to contribute, please follow these guidelines:
 
-- Fork the `credit-risk-classification` repository and clone it locally.
+- Fork the `Home_Sales` repository and clone it locally.
 - Create a new branch for your feature or bug fix.
 - Commit your changes with descriptive commit messages.
 - Push your branch to your forked repository.
