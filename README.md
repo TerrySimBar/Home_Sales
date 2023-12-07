@@ -81,6 +81,8 @@ Spark (version: 3.4.0)
 
 - The `home_sales.ipynb` file contains the code for the project. The results of the queries are also displayed in the notebook.
 
+- The `comparisons.md` file contains a discussion of the results of the queries.
+
 
 <br>
 
