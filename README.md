@@ -2,7 +2,7 @@
 A big data project that uses PySpark to determine key metrics about home sales data.
 <br>
 
-<img src="pyspark.png" alt="pyspark logo" width="400"/>
+<img src="/images/pyspark.png" alt="pyspark logo" width="400"/>
 <br>
 
 ## Table of Contents
@@ -46,7 +46,7 @@ Spark (version: 3.4.0)
 
     `createOrReplaceTempView` is used to create a temporary view of the DataFrame.
 
-<img src="temp_view.png" alt="Temp View of DataFrame" width="800"/>
+<img src="/images/temp_view.png" alt="Temp View of DataFrame" width="800"/>
 
 3. **Print out the data types** 
 
