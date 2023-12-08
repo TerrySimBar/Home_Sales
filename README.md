@@ -16,13 +16,14 @@ A big data project that uses PySpark to determine key metrics about home sales d
 <br>
 
 ### Overview 
-The purpose of this project is to use Spark to create temporary views, partition the data, and cache and uncache a temporary table. SparkSQL is used to run queries on the temporary views in order to answer specific questions about home sales. 
+The purpose of this project is to use Spark to create temporary views, partition the data, and cache and uncache a temporary table. SparkSQL is used to run queries on the temporary views in order to answer specific questions about home sales. The run times of certain queries on different table types are also compared to determine the most efficient table type.
 
 Here are some key features of the project:
 - Run SparkSQL queries to answer specific questions
 - Create a temporary view of the data
 - Partition the data
 - Cache and uncache a temporary table.
+- Compare the run times of queries on different table types
 
 <br>
 
